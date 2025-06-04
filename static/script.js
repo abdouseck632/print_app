@@ -6,12 +6,15 @@ fileInput.addEventListener("change", function () {
   const file = this.files[0];
   if (file) {
     button.style.display = "inline-block";
-    preview.innerHTML = `<p><strong>Fichier sélectionné :</strong> ${file.name}</p>`;
+    preview.innerHTML = `<p><strong>Selected file :</strong> ${file.name}</p>`;
     document.getElementById("sizeEstimate").innerText =
       (file.size / (1024 * 1024)).toFixed(2) + " MB";
   }
 });
-
+function goHome() {
+  //document.getElementById('popupSuccess').style.display = 'none';
+  window.location.href = "/";
+}
 function openPopup(id) {
   document.getElementById(id).style.display = "flex";
 }
@@ -20,10 +23,6 @@ function closePopup(id) {
 }
 button.addEventListener("click", () => openPopup("popup1"));
 
-function confirmOptions() {
-  closePopup("popup1");
-  openPopup("popup2");
-}
 
 function submitPrint() {
   //const token = document.getElementById("tokenInput").value.trim();
@@ -32,7 +31,7 @@ function submitPrint() {
   const duplex = document.querySelector('input[name="duplex"]:checked').value;
 
   if (!file) {
-    return alert("Merci de fournir un fichier");
+    return alert("Please provide a file");
   }
 
   const formData = new FormData();
@@ -45,24 +44,11 @@ function submitPrint() {
     method: "POST",
     body: formData
   })
-  .then(response => response.json().then(data => ({ status: response.status, body: data })))
-  .then(({ status, body }) => {
-    closePopup('popup2');
-    if (status === 200) {
-      document.getElementById('successPopup').style.display = 'flex';
-    } else {
-      document.getElementById('errorPopup').style.display = 'flex';
-    }
-  })
-  .catch(error => {
-    console.error(error);
-    closePopup('popup2');
-    document.getElementById('errorPopup').style.display = 'flex';
-  });
-  goHome();
-}
-
-function goHome() {
-  document.getElementById('popupSuccess').style.display = 'none';
-  window.location.href = "/";
+    .then(res => res.json())
+    .then(data => {
+      closePopup("popup1");
+      alert(data.message);
+    })
+    .catch(() => alert("message': '✅ Print sent! "));
+    window.location.href = "/";
 }

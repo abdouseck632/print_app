@@ -29,7 +29,7 @@ def print_file():
 
     printer = PRINTERS[color]
     if not file :
-        return jsonify({'message': 'Document manquant.'}), 400
+        return jsonify({'message': 'Missing file.'}), 400
 
     lp_options = ['lp', '-d', printer]
 
@@ -47,9 +47,13 @@ def print_file():
 
     try:
         subprocess.run(lp_options, check=True)
-        return jsonify({'message': '✅ Impression envoyée !'})
+        try:
+            os.remove(filepath)
+        except Exception as e:
+            print(f"Failed to delete file: {e}")
+        return jsonify({'message': '✅ Print sent!'})
     except subprocess.CalledProcessError:
-        return jsonify({'message': 'Erreur d\'impression.'}), 500
+        return jsonify({'message': '❌ Printing error.'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Impression invité – Labo</title>
+  <title>Guest impression – CEREMADE Laboratory</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 </head>
@@ -11,15 +11,15 @@
 <body>
   <div class="container">
     <img src="https://www.ceremade.dauphine.fr/confekeland/images/logo_ceremade.jpg" class="logo" alt="Logo" />
-    <h1>Impression pour invités</h1>
+    <h1>Printing for guests</h1>
     <label class="upload-box" for="file">
       <img src="https://img.icons8.com/fluency/96/document.png" width="64" />
-      <p><strong>Dépose ton fichier ici</strong> ou clique</p>
-      <small>Formats : PDF, DOCX</small>
-      <input type="file" id="file" accept=".pdf,.doc,.docx" />
+      <p><strong>Drop your file here</strong> or click</p>
+      <small>Format : PDF</small>
+      <input type="file" id="file" accept=".pdf" />
     </label>
     <div class="preview" id="preview"></div>
-    <button class="button" id="openOptions">Imprimer</button>
+    <button class="button" id="openOptions">Print</button>
   </div>
 
   <div class="popup-overlay" id="popup1">
@@ -57,26 +57,14 @@
     </div>
     <div class="popup-footer">
       <button class="btn btn-cancel" onclick="closePopup('popup1')">Cancel</button>
-      <button class="btn btn-confirm" onclick="confirmOptions()">Next</button>
+      <button class="btn btn-confirm" onclick="submitPrint()">Print</button>
     </div>
   </div>
 </div>
 
 
 
-  <!-- Popup 2 -->
-  <div class="popup-overlay" id="popup2">
-    <div class="popup-container">
-      <div class="popup-header">Saisis ton token</div>
-      <div class="popup-body">
-        <input type="text" id="tokenInput" placeholder="Ex : INV-12345" />
-      </div>
-      <div class="popup-footer">
-        <button class="btn btn-cancel" onclick="closePopup('popup2')">Retour</button>
-        <button class="btn btn-confirm" onclick="submitPrint()">Imprimer</button>
-      </div>
-    </div>
-  </div>
+ 
 
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
