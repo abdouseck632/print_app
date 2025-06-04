@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, jsonify
 import os
 from werkzeug.utils import secure_filename
 import subprocess
-
+from gevent.pywsgi import WSGIServer
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -56,4 +56,6 @@ def print_file():
         return jsonify({'message': '❌ Printing error.'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    http_server = WSGIServer(('', 5001), app)
+    print("✅ Flask app running with Gevent on port 5000...")
+    http_server.serve_forever()
