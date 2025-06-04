@@ -57,41 +57,28 @@
     </div>
     <div class="popup-footer">
       <button class="btn btn-cancel" onclick="closePopup('popup1')">Cancel</button>
-      <button class="btn btn-confirm" onclick="submitPrint()">Next</button>
+      <button class="btn btn-confirm" onclick="confirmOptions()">Next</button>
     </div>
   </div>
 </div>
 
 
 
-  
+  <!-- Popup 2 -->
+  <div class="popup-overlay" id="popup2">
+    <div class="popup-container">
+      <div class="popup-header">Saisis ton token</div>
+      <div class="popup-body">
+        <input type="text" id="tokenInput" placeholder="Ex : INV-12345" />
+      </div>
+      <div class="popup-footer">
+        <button class="btn btn-cancel" onclick="closePopup('popup2')">Retour</button>
+        <button class="btn btn-confirm" onclick="submitPrint()">Imprimer</button>
+      </div>
+    </div>
+  </div>
 
-<!-- Success Popup -->
-<div class="popup-overlay" id="popupSuccess" style="display: none;">
-  <div class="popup-container">
-    <div class="popup-header">Success</div>
-    <div class="popup-body center">
-      <img src="https://i.pinimg.com/originals/4a/10/e3/4a10e39ee8325a06daf00881ac321b2f.gif" alt="Success" width="120" />
-      <p>Your file has been sent to the printer!</p>
-    </div>
-    <div class="popup-footer">
-      <button class="btn btn-confirm" onclick="goHome()">OK</button>
-    </div>
-  </div>
-</div>
-<!-- Popup d'erreur -->
-<div class="popup-overlay" id="errorPopup">
-  <div class="popup-container">
-    <div class="popup-header">Printing Failed</div>
-    <div class="popup-body center">
-      <img src="https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" width="100" alt="Error" />
-      <p>There was an error sending the print job.</p>
-    </div>
-    <div class="popup-footer">
-      <button class="btn btn-confirm" onclick="closePopup('errorPopup')">OK</button>
-    </div>
-  </div>
-</div>
+
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 

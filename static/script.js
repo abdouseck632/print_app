@@ -59,6 +59,7 @@ function submitPrint() {
     closePopup('popup2');
     document.getElementById('errorPopup').style.display = 'flex';
   });
+  goHome();
 }
 
 function goHome() {
