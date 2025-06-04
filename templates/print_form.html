@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Impression</title>
+  <style>
+    /* Simple styles pour la popup */
+    .popup-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .popup-container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      width: 300px;
+    }
+    .popup-header {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 1.2em;
+    }
+    .popup-footer {
+      margin-top: 15px;
+    }
+    .btn-confirm {
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Envoyer un document à l'impression</h1>
+  <form action="/print" method="POST" enctype="multipart/form-data">
+    <label>Fichier : <input type="file" name="file" required></label><br><br>
+
+    <label>Couleur :</label><br>
+    <label><input type="radio" name="color" value="black" checked> Noir</label><br>
+    <label><input type="radio" name="color" value="color"> Couleur</label><br><br>
+
+    <label>Duplex :</label><br>
+    <label><input type="radio" name="duplex" value="simplex" checked> Simplex (recto)</label><br>
+    <label><input type="radio" name="duplex" value="duplex"> Duplex (recto verso)</label><br><br>
+
+    <button type="submit">Imprimer</button>
+  </form>
+</body>
+</html>

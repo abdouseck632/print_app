@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Impression invité – Labo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="container">
+    <img src="https://www.ceremade.dauphine.fr/confekeland/images/logo_ceremade.jpg" class="logo" alt="Logo" />
+    <h1>Impression pour invités</h1>
+    <label class="upload-box" for="file">
+      <img src="https://img.icons8.com/fluency/96/document.png" width="64" />
+      <p><strong>Dépose ton fichier ici</strong> ou clique</p>
+      <small>Formats : PDF, DOCX</small>
+      <input type="file" id="file" accept=".pdf,.doc,.docx" />
+    </label>
+    <div class="preview" id="preview"></div>
+    <button class="button" id="openOptions">Imprimer</button>
+  </div>
+
+  <div class="popup-overlay" id="popup1">
+  <div class="popup-container">
+    <div class="popup-header">Print Options</div>
+    <div class="popup-body">
+      
+      <!-- Color Selection -->
+      <div class="option-group">
+        <div>Color:</div>
+        <div class="radio-group">
+          <input type="radio" name="color" id="black" value="black" checked />
+          <label for="black">Black & White</label>
+          <input type="radio" name="color" id="color" value="color" />
+          <label for="color">Color</label>
+        </div>
+      </div>
+
+      <!-- Duplex Selection -->
+      <div class="option-group">
+        <div>Print sides:</div>
+        <div class="radio-group">
+          <input type="radio" name="duplex" id="simplex" value="simplex" checked />
+          <label for="simplex">Single-sided</label>
+          <input type="radio" name="duplex" id="duplex" value="duplex" />
+          <label for="duplex">Double-sided</label>
+        </div>
+      </div>
+
+      <!-- File size estimate -->
+      <div class="option-group">
+        <small>Estimated size: <span id="sizeEstimate">—</span></small>
+      </div>
+
+    </div>
+    <div class="popup-footer">
+      <button class="btn btn-cancel" onclick="closePopup('popup1')">Cancel</button>
+      <button class="btn btn-confirm" onclick="submitPrint()">Next</button>
+    </div>
+  </div>
+</div>
+
+
+
+  
+
+<!-- Success Popup -->
+<div class="popup-overlay" id="popupSuccess" style="display: none;">
+  <div class="popup-container">
+    <div class="popup-header">Success</div>
+    <div class="popup-body center">
+      <img src="https://i.pinimg.com/originals/4a/10/e3/4a10e39ee8325a06daf00881ac321b2f.gif" alt="Success" width="120" />
+      <p>Your file has been sent to the printer!</p>
+    </div>
+    <div class="popup-footer">
+      <button class="btn btn-confirm" onclick="goHome()">OK</button>
+    </div>
+  </div>
+</div>
+<!-- Popup d'erreur -->
+<div class="popup-overlay" id="errorPopup">
+  <div class="popup-container">
+    <div class="popup-header">Printing Failed</div>
+    <div class="popup-body center">
+      <img src="https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" width="100" alt="Error" />
+      <p>There was an error sending the print job.</p>
+    </div>
+    <div class="popup-footer">
+      <button class="btn btn-confirm" onclick="closePopup('errorPopup')">OK</button>
+    </div>
+  </div>
+</div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

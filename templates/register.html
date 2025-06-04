@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Impression invité – Labo HSHSSIBS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f8fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+
+    img.logo {
+      width: 200px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 22px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .upload-box {
+      width: 100%;
+      height: 220px;
+      border: 2px dashed #b4cce0;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      flex-direction: column;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .upload-box:hover {
+      background: #f0f8ff;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .preview img {
+      margin-top: 10px;
+      max-height: 300px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .button {
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      display: none;
+    }
+
+    .button:hover {
+      opacity: 0.95;
+    }
+
+    /* POP-UP DESIGN */
+    .popup-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-container {
+      background-color: white;
+      border-radius: 16px;
+      padding: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      width: 350px;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .popup-header {
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: white;
+      padding: 18px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 16px 16px 0 0;
+    }
+
+    .popup-body {
+      padding: 20px;
+    }
+
+    .popup-footer {
+      display: flex;
+      justify-content: flex-end;
+      padding: 15px 20px;
+      background-color: #f9f9f9;
+      border-top: 1px solid #eee;
+      border-radius: 0 0 16px 16px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .btn-cancel {
+      background-color: #f1f1f1;
+      color: #555;
+      margin-right: 10px;
+    }
+
+    .btn-confirm {
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: white;
+    }
+
+    .option-group {
+      margin-bottom: 25px;
+    }
+
+    .color-option input {
+      display: none;
+    }
+
+    .color-option label {
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .color-option input:checked + label {
+      border-color: #6e8efb;
+      background-color: #f0f4ff;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://www.ceremade.dauphine.fr/confekeland/images/logo_ceremade.jpg" class="logo" alt="Logo" />
+    <h1>Impression pour invités</h1>
+    
+    <label class="upload-box" for="file">
+      <img src="https://img.icons8.com/fluency/96/document.png" width="64" />
+      <p><strong>Dépose ton fichier ici</strong> ou clique</p>
+      <small>Formats : PDF, DOCX</small>
+      <input type="file" name="file" id="file" accept=".pdf,.doc,.docx" required />
+    </label>
+    <div class="preview" id="preview"></div>
+    <button class="button" id="openOptions">Imprimer</button>
+  </div>
+
+  <!-- Pop-up 1 : Choix impression -->
+  <div class="popup-overlay" id="popup1">
+    <div class="popup-container">
+      <div class="popup-header">Options d'impression</div>
+      <div class="popup-body">
+        <div class="option-group">
+          <div>Couleur :</div>
+          <div class="color-option">
+            <input type="radio" name="color" id="black" checked />
+            <label for="black">Noir & Blanc</label>
+            <input type="radio" name="color" id="color" />
+            <label for="color">Couleur</label>
+          </div>
+        </div>
+        <div class="option-group">
+          <small>Taille estimée : <span id="sizeEstimate">—</span></small>
+        </div>
+      </div>
+      <div class="popup-footer">
+        <button class="btn btn-cancel" onclick="closePopup('popup1')">Annuler</button>
+        <button class="btn btn-confirm" onclick="confirmOptions()">Suivant</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop-up 2 : Token invité -->
+  <div class="popup-overlay" id="popup2">
+    <div class="popup-container">
+      <div class="popup-header">Saisis ton token</div>
+      <div class="popup-body">
+        <input type="text" id="tokenInput" placeholder="Ex : INV-12345" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;" />
+      </div>
+      <div class="popup-footer">
+        <button class="btn btn-cancel" onclick="closePopup('popup2')">Retour</button>
+        <button class="btn btn-confirm" onclick="submitPrint()">Imprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById("file");
+    const preview = document.getElementById("preview");
+    const button = document.getElementById("openOptions");
+
+    fileInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        button.style.display = "inline-block";
+        preview.innerHTML = `<p><strong>Fichier sélectionné :</strong> ${file.name}</p>`;
+        document.getElementById("sizeEstimate").innerText = (file.size / (1024 * 1024)).toFixed(2) + " MB";
+      }
+    });
+
+    function openPopup(id) {
+      document.getElementById(id).style.display = "flex";
+    }
+
+    function closePopup(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    button.addEventListener("click", () => {
+      openPopup("popup1");
+    });
+
+    function confirmOptions() {
+      closePopup("popup1");
+      openPopup("popup2");
+    }
+
+    function submitPrint() {
+      const token = document.getElementById("tokenInput").value.trim();
+      if (!token) return alert("Merci d’entrer un token.");
+      closePopup("popup2");
+
+      // TODO : envoyer les données au serveur avec Fetch/AJAX ici
+      alert("✅ Impression envoyée !");
+    }
+  </script>
+</body>
+</html>
